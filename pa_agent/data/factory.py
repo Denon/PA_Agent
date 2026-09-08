@@ -4,41 +4,32 @@ from __future__ import annotations
 from typing import Literal
 
 from pa_agent.data.base import DataSource
-from pa_agent.data.market_defaults import (
-    A_SHARE_DEFAULT_SYMBOL,
-    GOLD_MT5_SYMBOL,
-    GOLD_TV_SYMBOL,
-)
+from pa_agent.data.market_defaults import A_SHARE_DEFAULT_SYMBOL
 
 DataSourceKind = Literal[
-    "mt5",
-    "tradingview",
+    "tdx",
     "akshare",
     "eastmoney",
     "eastmoney_futures",
     "tushare",
-    "yfinance",
 ]
 
 # UI-visible sources — 可在界面下拉框直接选择。
-# MT5 为默认数据源，排在首位；eastmoney 等仍可通过隐藏 kind 创建。
+# TDX 为默认数据源，排在首位；eastmoney 等仍可通过隐藏 kind 创建。
 DATA_SOURCE_CHOICES: tuple[tuple[DataSourceKind, str], ...] = (
-    ("mt5", "MT5"),
-    ("tradingview", "TradingView"),
+    ("tdx", "TDX"),
 )
 
 _HIDDEN_KINDS: frozenset[DataSourceKind] = frozenset(
-    {"akshare", "tushare", "yfinance", "eastmoney", "eastmoney_futures"}
+    {"akshare", "tushare", "eastmoney", "eastmoney_futures"}
 )
 
 _DEFAULT_SYMBOLS: dict[DataSourceKind, str] = {
-    "mt5": GOLD_MT5_SYMBOL,
-    "tradingview": GOLD_TV_SYMBOL,
+    "tdx": A_SHARE_DEFAULT_SYMBOL,
     "akshare": A_SHARE_DEFAULT_SYMBOL,
     "eastmoney": A_SHARE_DEFAULT_SYMBOL,
     "eastmoney_futures": "RB0 螺纹钢",
     "tushare": A_SHARE_DEFAULT_SYMBOL,
-    "yfinance": "GC=F",
 }
 
 
@@ -48,11 +39,11 @@ def default_tradingview_exchange() -> str:
 
 
 def normalize_data_source_kind(kind: str | None) -> DataSourceKind:
-    """Return a supported data-source kind, defaulting to MT5."""
+    """Return a supported data-source kind, defaulting to TDX."""
     supported = {k for k, _ in DATA_SOURCE_CHOICES} | _HIDDEN_KINDS
     if kind in supported:
         return kind  # type: ignore[return-value]
-    return "mt5"
+    return "tdx"
 
 
 def data_source_label(kind: str | None) -> str:
@@ -69,9 +60,7 @@ def data_source_label(kind: str | None) -> str:
         return "Tushare(A股)"
     if normalized == "akshare":
         return "AkShare"
-    if normalized == "yfinance":
-        return "YFinance"
-    return "MT5"
+    return "TDX"
 
 
 def default_symbol_for_kind(kind: str | None) -> str:
@@ -81,10 +70,10 @@ def default_symbol_for_kind(kind: str | None) -> str:
 def create_data_source(kind: str | None) -> DataSource:
     """Instantiate a fresh data source for *kind* (not connected)."""
     normalized = normalize_data_source_kind(kind)
-    if normalized == "tradingview":
-        from pa_agent.data.tradingview import TradingViewSource
+    if normalized == "tdx":
+        from pa_agent.data.tdx_source import TDXSource
 
-        return TradingViewSource()
+        return TDXSource()
     if normalized == "eastmoney":
         from pa_agent.data.eastmoney_source import EastMoneySource
 
@@ -99,14 +88,6 @@ def create_data_source(kind: str | None) -> DataSource:
         from pa_agent.data.tushare_source import TushareSource
 
         return TushareSource(settings=load_settings(SETTINGS_JSON_PATH))
-    if normalized == "akshare":
-        from pa_agent.data.akshare_source import AkShareSource
+    from pa_agent.data.akshare_source import AkShareSource
 
-        return AkShareSource()
-    if normalized == "yfinance":
-        from pa_agent.data.yfinance_source import YFinanceSource
-
-        return YFinanceSource()
-    from pa_agent.data.mt5 import MT5Source
-
-    return MT5Source()
+    return AkShareSource()

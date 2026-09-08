@@ -4,7 +4,7 @@
 
 ## 开发环境
 
-1. Windows 10/11，Python 3.11+
+1. Windows 10/11，Python 3.10+
 2. 安装 MetaTrader 5 并登录（用于真实 K 线联调）
 3. 克隆仓库后：
 

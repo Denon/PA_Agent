@@ -109,10 +109,10 @@ def reference_now_ms(
 
 
 def _looks_like_ashare_symbol(symbol: str | None) -> bool:
-    from pa_agent.data.market_defaults import normalize_ashare_tv_code
-
-    code = normalize_ashare_tv_code(symbol or "")
-    return len(code) == 6 and code.isdigit()
+    c = (symbol or "").strip().lower()
+    if len(c) == 6 and c.isdigit():
+        return True
+    return c.startswith(("sh", "sz")) and len(c) >= 8 and c[2:].isdigit()
 
 
 def is_bar_still_forming(

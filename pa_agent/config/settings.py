@@ -5,7 +5,7 @@ from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 DecisionStance = Literal["conservative", "balanced", "aggressive", "extreme_aggressive"]
-DataSourceKind = Literal["mt5", "tradingview", "akshare", "eastmoney", "eastmoney_futures", "tushare"]
+DataSourceKind = Literal["tdx", "akshare", "eastmoney", "eastmoney_futures", "tushare"]
 NormalizationMode = Literal["strict", "lenient"]
 
 
@@ -62,12 +62,11 @@ class GeneralSettings(BaseModel):
     analysis_bar_count: int = Field(default=100, ge=2, le=5000)
     refresh_interval_ms: int = 1000
     context_warning_threshold_pct: float = 99_999_999.0
-    last_data_source: DataSourceKind = "mt5"
+    last_data_source: DataSourceKind = "tdx"
     #: A-share K-line adjust for East Money / Baostock (qfq=前复权)
     kline_adjust: Literal["qfq", "hfq", "none"] = "qfq"
-    #: TradingView 交易所；空字符串 =（自动）依次探测预设列表
-    last_tradingview_exchange: str = ""
-    last_symbol: str = "XAUUSDm"
+    #: 默认品种（A股）
+    last_symbol: str = "000001"
     last_timeframe: str = "15m"
     decision_flow_auto_play: bool = True
     decision_flow_play_seconds: int = 50
@@ -102,10 +101,9 @@ class GeneralSettings(BaseModel):
             return "eastmoney"
         if v in ("adata", "a_share"):
             return "akshare"
-        if v == "eastmoney":
-            return "eastmoney"
-        if v == "tushare":
-            return "tushare"
+        if v in ("mt5", "tradingview", "tradingview_hk"):
+            # MT5 / TradingView 已由 TDX 替代
+            return "tdx"
         return v
 
     @field_validator("decision_flow_default_zoom_pct", mode="before")

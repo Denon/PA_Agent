@@ -5,9 +5,9 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "pa-agent"
 version = "0.1.0"
-description = "Price Action AI assistant: MT5 kline data, two-stage LLM analysis (AGPL-3.0)"
+description = "Price Action AI assistant: TDX/A-share kline data, two-stage LLM analysis (AGPL-3.0)"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.10"
 license = { text = "AGPL-3.0-or-later" }
 authors = [{ name = "PA Agent Team" }]
 dependencies = [
@@ -19,8 +19,7 @@ dependencies = [
     "tiktoken>=0.7",
     "jsonschema>=4.22",
     "pydantic>=2.7",
-    "MetaTrader5>=5.0; sys_platform == 'win32'",
-    "tvdatafeed @ git+https://github.com/rongardF/tvdatafeed.git",
+    "easy-tdx>=1.20.6",
     "cryptography>=42",
     "pywin32>=306; sys_platform == 'win32'",
     "akshare>=1.14",
@@ -48,11 +47,11 @@ include = ["pa_agent*"]
 
 [tool.black]
 line-length = 100
-target-version = ["py311"]
+target-version = ["py310"]
 
 [tool.ruff]
 line-length = 100
-target-version = "py311"
+target-version = "py310"
 
 [tool.ruff.lint]
 extend-select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]

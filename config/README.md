@@ -18,11 +18,7 @@
 
 3. `config/exception_state.json` 由程序在需要时自动创建，一般无需手动复制。结构可参考 `exception_state.example.json`。
 
-4. 如需自定义 TradingView 品种别名，复制模板：
 
-   ```cmd
-   copy config\tv_symbol_aliases.example.json config\tv_symbol_aliases.json
-   ```
 
 ## `settings.json` 字段说明
 
@@ -44,10 +40,9 @@
 
 | 字段 | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
-| `general.last_data_source` | string | `"mt5"` | K 线数据来源：`mt5` / `tradingview`（GUI 下拉选项）；`akshare` / `yfinance`（仅代码支持） |
-| `general.last_tradingview_exchange` | string | `""` | TradingView 交易所。空字符串 =（自动）依次探测预设列表。如 `OANDA`、`SSE`、`HKEX` 等 |
-| `general.last_symbol` | string | `"XAUUSDm"` | 默认品种。MT5 需含后缀（如 `m`），TradingView 用标准名（如 `XAUUSD`） |
-| `general.last_timeframe` | string | `"15m"` | 默认周期，如 `1m`、`5m`、`15m`、`1h`、`4h`、`1d` |
+| `general.last_data_source` | string | `"tdx"` | K 线数据来源：`tdx`（GUI 下拉选项，通达信/`easy-tdx`）；`akshare` / `eastmoney` / `tushare`（仅代码支持） |
+| `general.last_symbol` | string | `"000001"` | 默认品种。TDX 使用 A股/港股的 6 位/数字代码（如 `000001`） |
+| `general.last_timeframe` | string | `"1h"` | 默认周期，如 `1m`、`5m`、`15m`、`1h`、`1d` |
 | `general.analysis_bar_count` | int | `100` | 提交分析时使用的 K 线数量（2–5000） |
 | `general.refresh_interval_ms` | int | `1000` | 图表自动刷新间隔（毫秒） |
 | `general.context_warning_threshold_pct` | float | `80.0` | 上下文占用警告阈值（百分比） |
@@ -89,6 +84,6 @@
 
 ## 安全提醒
 
-- **不要**将 `config/settings.json`、`config/exception_state.json`、`config/tv_symbol_aliases.json` 提交到 Git。
+- **不要**将 `config/settings.json`、`config/exception_state.json` 提交到 Git。
 - 若曾误提交 API Key，请立即在服务商处**作废并轮换**密钥。
 - 建议在仓库根目录执行：`powershell -ExecutionPolicy Bypass -File tools\setup_git_secrets.ps1`

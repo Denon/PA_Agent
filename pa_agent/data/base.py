@@ -92,7 +92,7 @@ class DataSourceTransientError(DataSourceError):
 class DataSource(ABC):
     """Abstract interface for K-line data providers.
 
-    Implementations: TradingViewSource (active), MT5Source (stub).
+    Implementation: TDXSource (active).
     """
 
     @abstractmethod

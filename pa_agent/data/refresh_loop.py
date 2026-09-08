@@ -98,8 +98,7 @@ class RefreshLoop(QThread):
             finally:
                 self._in_flight = False
 
-            # Exponential backoff on repeated failures to avoid hammering
-            # TradingView's WebSocket endpoint
+            # Exponential backoff on repeated failures to avoid hammering the endpoint
             if self._consecutive_failures > 0:
                 backoff_s = min(
                     self._BACKOFF_BASE_S * (2 ** (self._consecutive_failures - 1)),

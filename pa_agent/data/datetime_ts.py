@@ -21,7 +21,7 @@ def datetime_to_ts_ms(dt: object) -> int:
 
   - Timezone-aware values are converted to UTC before epoch conversion.
   - Naive values are treated as UTC wall clock (no ``datetime.timestamp()`` local
-    shift), matching MT5 server-time semantics used elsewhere in the project.
+    shift), matching data-source server-time semantics used elsewhere in the project.
     """
     if dt is None:
         return int(_time.time() * 1000)

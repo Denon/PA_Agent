@@ -75,20 +75,13 @@ class AppContext:
 
         apply_kline_adjust_from_settings(settings)
         ds_kind = normalize_data_source_kind(
-            getattr(settings.general, "last_data_source", "mt5")
+            getattr(settings.general, "last_data_source", "tdx")
         )
         data_source = create_data_source(ds_kind)
 
         # Subscribe to the last-used symbol/timeframe from settings
         try:
             data_source.connect()
-            if ds_kind == "tradingview":
-                from pa_agent.data.tradingview import TradingViewSource
-
-                if isinstance(data_source, TradingViewSource):
-                    # Use saved exchange setting, default to auto (empty).
-                    saved_exchange = getattr(settings.general, 'last_tradingview_exchange', '') or ''
-                    data_source.set_exchange(saved_exchange)
             data_source.subscribe(
                 settings.general.last_symbol,
                 settings.general.last_timeframe,

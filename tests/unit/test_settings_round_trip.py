@@ -18,9 +18,9 @@ def test_defaults(tmp_path):
     assert s.provider.reasoning_effort == "high"
     assert s.provider.context_window == 2_000_000
     assert s.general.analysis_bar_count == 100
-    # 默认数据源为 MT5, 默认品种为现货黄金 XAUUSDm
-    assert s.general.last_data_source == "mt5"
-    assert s.general.last_symbol == "XAUUSDm"
+    # 默认数据源为 TDX, 默认品种为 A股 000001
+    assert s.general.last_data_source == "tdx"
+    assert s.general.last_symbol == "000001"
     assert s.general.last_timeframe == "15m"
     assert s.general.decision_stance == "balanced"
     assert s.general.decision_flow_auto_play is True
@@ -37,8 +37,9 @@ def test_round_trip(tmp_path):
     save_settings(original, p)
     loaded = load_settings(p)
     assert loaded.provider.api_key == "sk-test-1234"
-    # 默认数据源为 mt5, 加密货币代码 BTCUSDT 迁移为 MT5 现货黄金默认品种 XAUUSDm
-    assert loaded.general.last_symbol == "XAUUSDm"
+    # 默认数据源为 tdx; 加密货币代码 BTCUSDT 迁移为 A股默认品种 000001
+    assert loaded.general.last_data_source == "tdx"
+    assert loaded.general.last_symbol == "000001"
     assert loaded.provider.model == original.provider.model
 
 

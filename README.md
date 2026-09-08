@@ -27,9 +27,9 @@
 
 | 项目     | 要求                                                                    |
 | -------- | ----------------------------------------------------------------------- |
-| 操作系统 | Windows 10 / 11（主支持）、macOS 12+（TradingView 数据源）              |
-| Python   | 3.11+                                                                    |
-| 数据源   | MT5 / TradingView / yfinance / AkShare **至少配置一种**                  |
+| 操作系统 | Windows 10 / 11（主支持）、macOS 12+                                |
+| Python   | 3.10+                                                                    |
+| 数据源   | TDX（默认，A股/港股）/ AkShare / 东方财富                               |
 | 网络     | 可访问所配置的 AI API（如 DeepSeek、PackyAPI 等）                        |
 
 ---
